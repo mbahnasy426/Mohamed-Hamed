@@ -1,6 +1,6 @@
 # IoT/MCU – Personal Portfolio | Mohamed Hamed | HSBI
-Author: <replace Mohamed Elsayed Bhnasy Abdelsayed Hamed   >
-My partner is <replace Mohamed Nassar, Adam Salman >, [portfolio link](https://github.com/partner/iot-portfolio)
+Author: < Mohamed Elsayed Bhnasy Abdelsayed Hamed   >
+My partner is < Mohamed Nassar, Adam Salman >, [portfolio link](https://github.com/partner/iot-portfolio)
 In my team for the final project, I also had the following members:
 - <replace these pointy brackets with their full name>, [portfolio link](https://github.com/partner/iot-portfolio)
 - <replace these pointy brackets with their full name>, [portfolio link](https://github.com/partner/iot-portfolio)
