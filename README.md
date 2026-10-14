@@ -14,7 +14,7 @@ This repository contains my portfolio for the IoT/MCU course at Hochschule Biele
 
 **Course:** IoT/MCU
 
-**My Partners are **
+My Partners are 
 1. **Mohamed Nassar** – [GitHub Portfolio](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
 2. **Adam Salman** – [GitHub Portfolio](https://github.com/adamhsalman-droid/Adam.Salman-Portfolio)
 
