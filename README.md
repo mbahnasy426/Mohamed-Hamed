@@ -1,6 +1,7 @@
 # IoT/MCU – Personal Portfolio | Mohamed Hamed | HSBI
-Author: < Mohamed Elsayed Bhnasy Abdelsayed Hamed   >
-My partner is < Mohamed Nassar, Adam Salman >, [portfolio link](https://github.com/partner/iot-portfolio)
+Personal Portfolio :<This repository contains my portfolio for the IoT/MCU course at Hochschule Bielefeld. It includes my work during the course, such as practical tasks, exercises, projects, and reflections on what I learned in each module.>
+Author: < Mohamed Elsayed Bhnasy Abdelsayed Hamed >
+My partner is < Mohamed Nassar, Adam Salman >, [Mohamed Nasser](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio ) . [Adam Salman] ( https://github.com/adamhsalman-droid/Adam.Salman-Portfolio )  . 
 In my team for the final project, I also had the following members:
 - <replace these pointy brackets with their full name>, [portfolio link](https://github.com/partner/iot-portfolio)
 - <replace these pointy brackets with their full name>, [portfolio link](https://github.com/partner/iot-portfolio)
