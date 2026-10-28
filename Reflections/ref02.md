@@ -20,12 +20,17 @@ I found it interesting to learn how a database can have mistakes without showing
 
 ### 5. How was your interaction with peers and instructors?
 
-We discussed Module 2 with Habiba Aladdin Darwish and her group. We shared our ideas about the tasks and explained some of the database concepts to each other. It was helpful to hear how another group understood the same topics.
+We discussed Module 2 with Habiba Aladdin Darwish, Arshia, Asima, and their group. We shared our ideas about the tasks and explained some of the database concepts to each other. It was helpful to hear how another group understood the same topics. The professor also joined our discussion and corrected the parts we did not understand correctly.
 
 ### 6. Who helped you, gave feedback, and was it valuable?
 
-We discussed Module 2 with Habiba Aladdin Darwish and her group. We shared our ideas and explained the different points to each other. While both groups were discussing, the professor was also correcting our mistakes and explaining the parts we did not understand correctly. This was really helpful because we could learn from our mistakes and understand the topics better.
+Habiba Aladdin Darwish, Arshia, and Asima helped us during Module 2. We discussed the tasks together and shared our ideas. While both groups were discussing, the professor was also correcting our mistakes and explaining the parts we did not understand correctly. This was really helpful because we learned from our mistakes and understood the topics better.
 
+Their GitHub portfolios:
+- [Habiba's Portfolio](https://github.com/Habiba-AladdinDarwish/Darwish_Databases_C2026)
+- [Arshia's GitHub](https://github.com/Arshia-zi)
+- [Asima's Portfolio](https://github.com/asimarmanerdogan-crypto/Databases2026/tree/main)
+- 
 ### 7. Who did you help or give feedback to?
 
 We were helping each other during the tasks, and I helped my group members by sharing what I understood and discussing the questions with them. We also exchanged ideas with Habiba and her group, which helped us understand the topics better.
