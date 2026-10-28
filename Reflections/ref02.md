@@ -30,7 +30,7 @@ Their GitHub portfolios:
 - [Habiba's Portfolio](https://github.com/Habiba-AladdinDarwish/Darwish_Databases_C2026)
 - [Arshia's GitHub](https://github.com/Arshia-zi)
 - [Asima's Portfolio](https://github.com/asimarmanerdogan-crypto/Databases2026/tree/main)
-- 
+  
 ### 7. Who did you help or give feedback to?
 
 We were helping each other during the tasks, and I helped my group members by sharing what I understood and discussing the questions with them. We also exchanged ideas with Habiba and her group, which helped us understand the topics better.
