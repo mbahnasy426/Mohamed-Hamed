@@ -3,12 +3,14 @@
 
 ## Learning Goals
 
-- Understand how this course works and how we will be assessed through our GitHub portfolio.
-- Learn how to set up and organize my personal GitHub portfolio and use `.gitignore` to avoid uploading unnecessary files.
-- Learn how to install and use tools like Python, SQLite, DuckDB, Datasette, and uv.
-- Understand the difference between an embedded database and a client/server database.
-- Learn how to store data in SQLite and use SQL queries to get information from it.
-- Learn how to use AI to help me write SQL queries and understand why I should always check the answers.
+| Learning goal | Evidence |
+| --- | --- |
+| Explain the course's CBL/PBL model and portfolio assessment | [My reflection](../Reflections/ref01.md) |
+| Maintain a personal portfolio, commits and safe Git files | [Portfolio home](../README.md), [module links](../module-01/README.md), [Git ignore](../.gitignore) |
+| Set up Python 3.14 and database tooling using uv | [Recorded tool versions](../module-01/uv-check-output.txt), [uv-check.py](../uv-check.py), [pyproject.toml](../pyproject.toml), [uv.lock](../uv.lock) |
+| Explain and measure embedded vs client/server database trade-offs | [Local-first explanation and measurement status](../module-01/local-first-comparison.md) |
+| Reproducibly load rows into SQLite using Python bound parameters | [Generator](../module-01/generate_telemetry.py), [loader](../module-01/load_telemetry.py), [saved results](../module-01/query-results.txt) |
+| Verify rather than trust AI-generated SQL | [AI query verification](../module-01/task-07-ai-verification.md) |
 
 ## What I Plan to Explore
 
