@@ -1,127 +1,61 @@
-# Module 1 — Introduction and Local-First Foundations
+# Module 01 — Introduction and Local-First Foundations
 
-## Learning Goals
+## Learning goals
 
-In this module, I wanted to learn:
+By the end of this module, I should be able to:
 
-- How this course works and how we will be assessed through our GitHub portfolio.
-- How to create and organize my personal GitHub portfolio and use `.gitignore`.
-- How to install and use tools like Python, SQLite, DuckDB, Datasette, and uv.
-- The difference between an embedded database and a client/server database.
-- How to store information in SQLite and use Python to get information from it.
-- How to use AI to help me write SQL queries and why we should always check the answers.
+1. Explain the CBL/PBL approach, portfolio assessment, and evolving course requirements.
+2. Set up a personal GitHub portfolio with an appropriate `.gitignore`.
+3. Reproduce the course Python environment with `uv`, SQLite, DuckDB, and Datasette.
+4. Measure and explain how an embedded database differs from a client/server database.
+5. Load real telemetry rows into SQLite and use bound parameters in Python.
+6. Run and verify an AI-generated SQL query rather than trusting it immediately.
 
-My main goal was to understand the basics of databases and learn how to use the different tools.
+My goal is to understand the basics of databases and practise using them through small exercises.
 
-## Course and Portfolio Links
+## Course and portfolio links
 
-- [Module 1 Instructions](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/01-introduction-and-local-first.md)
-- [Course Syllabus](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/syllabus.md)
-- [My GitHub Portfolio](https://github.com/mbahnasy426/Mohamed-Hamed)
-- [SQL Island Notes](sql-island.md)
-- [AI Query Verification](task-07-ai-verification.md)
+- [Module 01 instructions](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/01-introduction-and-local-first.md)
+- [Course syllabus](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/syllabus.md)
+- [My portfolio home](../README.md)
+- [SQL Island notes](sql-island.md)
+- [AI query verification](task-07-ai-verification.md)
 
-## Our Task Pod
+## Task Pod
 
-Our group has three members:
+Our Task Pod has three members:
 
-- **Mohamed Elsayed (Me):** [My Portfolio](https://github.com/mbahnasy426/Mohamed-Hamed)
-- **Mohamed Nassar:** [GitHub Portfolio](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
-- **Adam Salman:** [GitHub Portfolio](https://github.com/adamhsalman-droid/Adam.Salman-Portfolio)
+- Adam Salman — [Portfolio](https://github.com/adamhsalman-droid/Adam.Salman-Portfolio)
+- Mohamed Alsayed — [Portfolio](https://github.com/mbahnasy426/Mohamed-Hamed)
+- Mohamed Nassar — [Portfolio](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
 
-## Our Contributions
+## Contributions
 
-We divided the tasks between us so that everyone could work on different parts of the module.
+- **Mohamed Nassar (Tasks 1–4):** Set up the GitHub portfolio, configured the Python environment, and completed the SQLite shell exercises.
+- **Mohamed Alsayed (Task 5):** Completed the SQL Island exercises, practiced SQL commands, and documented the learning experience.
+- **Adam Salman (Tasks 6–7):** Generated and analyzed telemetry data using Python and SQLite, and verified AI-generated SQL queries.
 
-### Mohamed Nassar — Tasks 1–4
+**Teamwork:** All three members discussed the assignments, reviewed the results, and supported each other throughout the project.
 
-Mohamed worked on setting up the GitHub portfolio, installing the Python environment, and practicing some SQLite commands in the terminal.
 
-### Mohamed Elsayed (Me) — Task 5
+## Evidence status (updated October 2026)
 
-I worked on SQL Island, where I practiced different SQL commands and learned how to get information from a database. It helped me understand SQL better because I could practice the commands myself.
+- [x] **Portfolio / Task Pod:** own repository, links to podmates, descriptions of contributions.
+- [x] **Python environment:** saved `uv-check-output.txt`, `pyproject.toml`, `uv.lock` and `uv-check.py`.
+- [x] **SQLite shell / SQL Island:** saved shell tour, SQL samples and SQL Island screenshot. [SQL Island notes](sql-island.md).
+- [x] **Telemetry:** reproducible generator, loader, query script, and saved results (172,800 readings).
+- [x] **AI verification:** recorded query, actual plan, and documented limitation of the AI's interpretation of *overnight*. [Verification note](task-07-ai-verification.md).
+- [x] **Reflection:** [completed logbook](../Reflections/ref01.md).
+- [x] **Bound parameters:** `load_telemetry.py` uses `executemany` with placeholders; [parameter-demo.py](parameter-demo.py) illustrates a parameterized `SELECT`.
+- [ ] **Live peer gate:** make and show a new commit from your own laptop; independently test the Markdown links.
+- [ ] **Instructor access:** confirm collaborator permissions in GitHub Settings.
+- [ ] **Embedded vs server:** SQLite measurements are saved, but an equivalent client/server measurement has not been run. [Comparison and honest evidence status](local-first-comparison.md).
 
-### Adam Salman — Tasks 6–7
+This is evidence of work saved in the portfolio, not a claim that each step was independently rerun in this review.
 
-Adam worked on generating telemetry data using Python and SQLite. He also worked on checking SQL queries generated by AI to make sure the answers were correct.
+## Reproducing Tasks 3, 6 and 7
 
-### Teamwork
-
-We were helping each other during the tasks and discussing the problems we faced. If someone didn't understand something, we tried to explain it to each other. This helped us understand the module better.
-
-## What We Worked On
-
-### 1. GitHub Portfolio
-
-We learned how to create and organize our GitHub portfolios. I also understood that `.gitignore` is used to prevent unnecessary files, such as databases and secret files, from being uploaded to GitHub.
-
-### 2. Python Environment
-
-We learned about uv and how it helps us install and manage Python and other tools needed for the course.
-
-The portfolio includes files for checking the Python environment, such as:
-
-- `uv-check-output.txt`
-- `pyproject.toml`
-- `uv.lock`
-- `uv-check.py`
-
-### 3. SQLite and SQL Island
-
-We practiced using SQLite and SQL commands to get information from databases.
-
-I worked on SQL Island, which helped me practice commands like SELECT, FROM, and WHERE.
-
-[My SQL Island Notes](sql-island.md)
-
-### 4. Embedded and Client/Server Databases
-
-I learned the difference between embedded databases and client/server databases.
-
-An embedded database like SQLite works directly with the application without needing a separate server.
-
-A client/server database like PostgreSQL needs a separate database server.
-
-I understood that SQLite is useful for local applications because it is easier to set up and doesn't need a separate server.
-
-The SQLite measurements were saved, but the equivalent client/server measurement still needs to be completed.
-
-[Database Comparison](local-first-comparison.md)
-
-### 5. Telemetry Data
-
-We worked on generating and storing telemetry data using Python and SQLite.
-
-The task included generating 172,800 readings and using SQL queries to get information from the database.
-
-I also learned that bound parameters help us pass values safely into SQL queries.
-
-### 6. AI Query Verification
-
-We learned how AI can help us generate SQL queries, but we should not just copy the answers without checking them.
-
-In the AI verification task, an issue was found with how AI understood the word "overnight". This showed why we need to check the results ourselves.
-
-[AI Verification Notes](task-07-ai-verification.md)
-
-## Evidence Status
-
-These are the tasks and evidence recorded in the portfolio:
-
-- [x] Created the GitHub portfolio and added our group members.
-- [x] Saved the Python environment files.
-- [x] Practiced SQLite commands and SQL Island.
-- [x] Generated and worked with telemetry data.
-- [x] Worked on checking AI-generated SQL queries.
-- [x] Added examples of bound parameters.
-- [x] Completed Reflection 1.
-- [ ] Make and show a new GitHub commit during the live peer check.
-- [ ] Confirm that the professor has access to the repository.
-- [ ] Complete the client/server database measurement for comparison with SQLite.
-
-## Reproducing the Tasks
-
-These are the commands used for setting up the environment and running the Python tasks.
+From the **root of this repository** (after installing `uv`):
 
 ```sh
 uv python install 3.14
@@ -133,64 +67,6 @@ uv run python module-01/load_telemetry.py
 uv run python module-01/query_telemetry.py
 ```
 
-We should only use `uv init` if the project doesn't already have a `pyproject.toml` file.
+Use `uv init` only if a `pyproject.toml` does not already exist. The `.db`, CSV, virtual environment, and secrets stay out of the repository. Commit the generated lockfile and save **genuine** output after running the commands.
 
-The generated database files, temporary files, and passwords should not be uploaded to GitHub.
-
-## Reflection 1
-
-[My Reflection 1](https://github.com/mbahnasy426/Mohamed-Hamed/blob/main/Reflections/ref01.md)
-
-## My Main Take-away
-
-The most important thing I learned from this module was how to start working with databases and SQL. I also learned how to use GitHub, VS Code, and different Python tools.
-
-At the beginning, some things were confusing, especially installing uv and understanding the terminal, but after trying different steps and asking questions, I started to understand them better.
-
-My advice would be to understand the basics first and not just copy commands without knowing what they do.tion from them.
-- Explore how AI can help me understand SQL and solve database tasks.
-
-## Task Personal Profile
-
-- **Database experience:** I don't have previous experience with databases, so this is my first time learning SQL and SQLite.
-- **Programming experience:** I have some basic knowledge of C and C++, but I am still learning programming, especially Python.
-- **Command line / Git / GitHub:** I am still learning how to use them. At the beginning, I had some difficulties with GitHub, VS Code, and installing uv.
-- **Other skills:** I study Mechatronics and Automation at Hochschule Bielefeld (HSBI), and I like working with others and learning new things.
-
-## What I Want From This Class
-
-I want to learn how databases work and how to use SQL to store and get information. I also want to improve my programming skills and learn how to use GitHub and Python better.
-
-## My Partners Are
-
-- **Mohamed Nassar:** [GitHub Portfolio](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
-- **Adam Salman:** [GitHub Portfolio](https://github.com/adamhsalman-droid/Adam.Salman-Portfolio)
-
-## Reflection 1
-
-[My Reflection 1](https://github.com/mbahnasy426/Mohamed-Hamed/blob/main/Reflections/ref01.md)
-
-## Most Useful Dot-Command
-
-**`.schema`** — I found this command useful because it shows how the tables were created and what columns they contain. This helps me understand the database structure before writing SQL queries.
-
-> When you start editing this file, remove this description.
->
-> Usually the first things you have to document are some inspirations hinting at what
-> you might be able to build in this class, a personal profile description regarding
-> programming expertise, previous MCU knowledge, creative qualities, and expectations
-
-Module description
-
-## Task Inspirations
-
-- Inspiration 1
-- Inspiration 2
-
-## Task Personal Profile
-
-## Task What is IoT
-
-
-## Reflection 1
-[Reflection 1](/Reflections/ref01.md)
+Task 4 uses the real `sqlite3` terminal. The included `tour.sql` is an illustrative starting script, not evidence that a shell session has taken place.

@@ -1,0 +1,29 @@
+﻿database: telemetry.db, bytes: 10526720, rows: 172800
+
+readings per machine
+SQL: SELECT machine, COUNT(*) AS n FROM readings GROUP BY machine
+rows: [('cnc-01', 57600), ('cnc-02', 57600), ('cnc-03', 57600)]
+elapsed_ms: 41.786
+
+peak vibration per machine
+SQL: SELECT machine, MAX(vib_rms) AS peak_vib FROM readings GROUP BY machine
+rows: [('cnc-01', 2.398), ('cnc-02', 3.168), ('cnc-03', 2.55)]
+elapsed_ms: 61.548
+
+readings above alarm threshold
+SQL: SELECT COUNT(*) AS alarms FROM readings WHERE vib_rms > 2.0
+rows: [(11714,)]
+elapsed_ms: 15.227
+
+average overnight spindle load
+SQL: SELECT machine, ROUND(AVG(spindle_load), 2) AS avg_spindle_load
+        FROM readings
+        WHERE time(ts) > '18:00:00'
+        GROUP BY machine
+        ORDER BY avg_spindle_load DESC
+rows: [('cnc-03', 60.43), ('cnc-01', 60.37), ('cnc-02', 60.36)]
+elapsed_ms: 27.656
+EXPLAIN QUERY PLAN:
+(7, 0, 216, 'SCAN readings')
+(12, 0, 0, 'USE TEMP B-TREE FOR GROUP BY')
+(52, 0, 0, 'USE TEMP B-TREE FOR ORDER BY')
