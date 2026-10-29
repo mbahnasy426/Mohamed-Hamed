@@ -1,6 +1,6 @@
 # Data base  – Personal Portfolio | Mohamed Hamed | HSBI
 
-**Author:** Mohamed Elsayed Bahnasy Abdelsayed Hamed
+**Name:** Mohamed Elsayed Bahnasy Abdelsayed Hamed
 
 **University:** Hochschule Bielefeld (HSBI)
 
