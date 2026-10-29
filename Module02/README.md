@@ -40,8 +40,6 @@ The `setup.sql` is rerunnable and intentionally creates an **incorrect** schema.
 - Complete a **real** neighboring-pod discussion, record the agreed learning and share a diagram on Discord. The portfolio does not claim those events occurred.
 - Optional stretcher work on EER inheritance and additional Mermaid curiosities is not included.
 
-## One-minute explanation in English
 
-"I learned how to read an old database schema and find problems. I drew an ER diagram to show the tables and relationships. I used SQL to prove five problems, including a maintenance job linked to a machine that does not exist and a duplicated part. I learned that a many-to-many relationship needs a junction table. Finally, I used Pydantic and SQLAlchemy to describe rules for a better database."
 
 [Course Module 2](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/02-data-contracts-and-legacy-schemas.md) · [Back to main portfolio](../README.md)
