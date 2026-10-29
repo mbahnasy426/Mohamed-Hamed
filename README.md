@@ -1,42 +1,33 @@
-# Data base  – Personal Portfolio | Mohamed Hamed | HSBI
+# HSBI Databases Portfolio
 
-## About This Portfolio
+**Adam Salman** — Databases course, Hochschule Bielefeld (HSBI).
 
-This repository contains my portfolio for the Data base  course at Hochschule Bielefeld (HSBI). It includes my work during the course, such as practical tasks, exercises, projects, and reflections on what I learned in each module.
+This is my personal learning portfolio for the course. It collects the scripts, recorded observations, SQL practice, Task Pod collaboration and reflections that I can explain and reproduce.
 
-## Author
+## Module index
 
-**Name:** Mohamed Elsayed Bhnasy Abdelsayed Hamed
+- [Module 01 — Introduction and Local-First Foundations](Module01/README.md) — [practical scripts and results](module-01/README.md)
+- [Module 02 — Data Contracts and Legacy Schemas](Module02/README.md) — ER models, tested defect queries, and data contract
+- Module 03 — LLM-Assisted SQL and Query Profiling — not yet
 
-**University:** Hochschule Bielefeld (HSBI)
+## Module 01 highlights
 
-**Study Program:** Mechatronics and Automation
+- Python 3.14 + SQLite, DuckDB, Datasette and uv environment records.
+- SQL Island exercise and a screenshot of pod progress.
+- Generated **172,800** telemetry readings across three CNC machines, stored in embedded SQLite.
+- Saved real query outputs and a query plan.
+- A checked AI-generated SQL query, including a documented meaning error.
+- [Module 1 reflection](Reflections/ref01.md).
 
-**Course:** Data base
+## Task Pod
 
-My Partners are 
-1. **Mohamed Nassar** – [GitHub Portfolio](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
-2. **Adam Salman** – [GitHub Portfolio](https://github.com/adamhsalman-droid/Adam.Salman-Portfolio)
+- [Adam Salman](https://github.com/adamhsalman-droid/Adam.Salman-Portfolio)
+- [Mohamed Nassar](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
+- [Mohamed Alsayed / Hamed](https://github.com/mbahnasy426/Mohamed-Hamed)
 
- 
-In my team for the final project, I also had the following members:
-- <replace these pointy brackets with their full name>, [portfolio link](https://github.com/partner/iot-portfolio)
-- <replace these pointy brackets with their full name>, [portfolio link](https://github.com/partner/iot-portfolio)
+See [Module 1](Module01/README.md) for roles, links, evidence and reproducibility steps.
 
-Our team final project repository is [here](https://github.com/somewhere/final-iot-project)
+## Links
 
-My personal profile and expectations, you can find [here](Module01/README.md#task-personal-profile).
-
-## Table of Contents
-
-- [Module 1: IoT Introduction](Module01/README.md), 
-  [Reflection 1](Reflections/ref01.md)
-- [Module 2: Hardware and Basic Electronics](Module02/README.md),
-  [Reflection 2](Reflections/ref02.md), [Reflection 3](Reflections/ref03.md)
-- ...
-
-## Miscellanious
-
-- [Hardware in my/our possession](Hardware/README.md)
-
-
+- [Course syllabus](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/syllabus.md)
+- [Module 1 course instructions](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/01-introduction-and-local-first.md)
