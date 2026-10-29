@@ -1,8 +1,16 @@
-# Module 2
 
-We are going to show here notes for Task 1, 2, 3, 4, and 5 to prove
 
 # Module 2 — Data Contracts & Reading Legacy Schemas
+
+| Learning goal | Evidence |
+|---|---|
+| Reconstruct entities, keys, relationships and cardinality | [ER audit with Mermaid diagram](er-audit.md) |
+| Distinguish 1:1, 1:n and m:n and draw examples | [Four ER sketches and SQL proof](er-examples.md) |
+| Find defects using real queries, not guesses | [SQL for five defects](defect-queries.sql) and [recorded results](er-audit.md) |
+| Explain natural vs surrogate keys | [ER audit — key choices](er-audit.md) |
+| Implement a code-first data contract | [Pydantic + SQLAlchemy contract](contract.py) |
+| Describe the missing business requirements | [Business rules](er-audit.md) |
+| Record sources, verification and learning | [Study log](study-log.md) and [Reflection 02](../Reflections/ref02.md) |
 
 ## Learning Goals
 
