@@ -12,7 +12,7 @@ This repository contains my portfolio for the IoT/MCU course at Hochschule Biele
 
 **Study Program:** Mechatronics and Automation
 
-**Course:** IoT/MCU
+**Course:** Data base
 
 My Partners are 
 1. **Mohamed Nassar** – [GitHub Portfolio](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
