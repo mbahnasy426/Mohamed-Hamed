@@ -1,6 +1,8 @@
+# Module 02 — Data Contracts & Reading Legacy Schemas
 
+**Focus:** inspect a broken maintenance database, reconstruct its intended ER model, prove defects using SQL, and describe a corrected executable contract.
 
-# Module 2 — Data Contracts & Reading Legacy Schemas
+## Learning goals and evidence
 
 | Learning goal | Evidence |
 |---|---|
@@ -12,81 +14,34 @@
 | Describe the missing business requirements | [Business rules](er-audit.md) |
 | Record sources, verification and learning | [Study log](study-log.md) and [Reflection 02](../Reflections/ref02.md) |
 
-## Learning Goals
+## Reproduce the legacy database and tests
 
-- Learn how to understand an existing database and create ER and EER diagrams.
-- Understand the difference between entities, attributes, relationships, primary keys, and foreign keys.
-- Learn about the different relationships, such as one-to-one, one-to-many, and many-to-many.
-- Learn how to find problems in databases, like duplicated data, missing foreign keys, and incorrect relationships.
-- Understand the difference between natural keys and surrogate keys.
-- Learn how Pydantic and SQLAlchemy can help us create rules to keep database information correct.
-- Understand why business rules are important in a database.
+From the repository root (SQLite CLI installed):
 
-## What I Learned
+```powershell
+sqlite3 Module02/legacy.db ".read Module02/setup.sql"
+sqlite3 -header -column Module02/legacy.db ".read Module02/defect-queries.sql"
+uv run python Module02/contract.py
+```
 
-In this module, I learned more about how databases are structured and how tables are connected to each other. I also understood that a database can have problems even if it is working.
+The `setup.sql` is rerunnable and intentionally creates an **incorrect** schema. It must not be mistaken for the repaired one. Database files (`*.db`) are ignored by Git.
 
-One important thing I learned was how primary keys and foreign keys help connect tables. I also learned about ER diagrams and the different types of relationships.
+## Findings to explain in the checkpoint
 
-## Studio Lab — Auditing the Legacy Maintenance Schema
+1. `maint_job` references missing machine `cnc-05` (orphan).
+2. `P-1003` exists twice (no uniqueness).
+3. `unit_price` is `TEXT`, so comparing it with `'15'` can give misleading results.
+4. A machine has installed date `unknown`.
+5. `parts_used` contains comma-separated values, which hides a many-to-many relationship.
 
-In this lab, we focused on understanding a maintenance database and finding problems in its structure.
+## What is still to verify
 
-### Task 1 — Understanding the Database Structure
+- Run the SQL and the Pydantic/SQLAlchemy contract on the student's own environment; the five legacy defect results were checked using SQLite, but the committed contract is not yet accompanied by captured runtime DDL output.
+- Complete a **real** neighboring-pod discussion, record the agreed learning and share a diagram on Discord. The portfolio does not claim those events occurred.
+- Optional stretcher work on EER inheritance and additional Mermaid curiosities is not included.
 
-I learned how to identify entities, attributes, primary keys, and foreign keys in a database.
+## One-minute explanation in English
 
-I also understood how ER diagrams show the relationships between different tables.
+"I learned how to read an old database schema and find problems. I drew an ER diagram to show the tables and relationships. I used SQL to prove five problems, including a maintenance job linked to a machine that does not exist and a duplicated part. I learned that a many-to-many relationship needs a junction table. Finally, I used Pydantic and SQLAlchemy to describe rules for a better database."
 
-### Task 2 — Finding Problems in the Database
-
-I learned that a database can contain different problems, such as:
-
-- Missing foreign keys.
-- Duplicated information.
-- Records connected to something that does not exist.
-- Incorrect relationships between tables.
-
-I also understood that we should use SQL queries to check these problems instead of just guessing.
-
-### Task 3 — Data Contracts
-
-I learned that we can use different rules to make sure the information stored in a database is correct.
-
-**In the database (SQLAlchemy):**
-
-- Primary keys help identify records.
-- Foreign keys connect tables.
-- UNIQUE prevents duplicated values in columns that should be unique.
-- NOT NULL means a value cannot be missing.
-
-**In the model (Pydantic):**
-
-- We can check that the information follows certain rules before saving it.
-- For example, a machine serial number should start with "SN-".
-- We can also check that a date is valid.
-
-**Why we use both:**
-
-I understood that the model helps us find mistakes before saving the information, while the database has rules to protect the data.
-
-### Task 4 — Understanding Relationships and Keys
-
-I learned the difference between:
-
-- **Entity:** Something we store information about, like a machine.
-
-
-## Reflection 2
-[Reflection 2](/Reflections/ref02.md)
-
-## Task ...
-
-...
-
-If the module is longer than 1 week, you might have several reflections within it. If not, delete this and the following.
-
-## Reflection 3
-[Reflection 3](/Reflections/ref03.md)
-
-
+[Course Module 2](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/02-data-contracts-and-legacy-schemas.md) · [Back to main portfolio](../README.md)
