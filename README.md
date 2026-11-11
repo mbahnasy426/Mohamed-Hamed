@@ -1,91 +1,67 @@
-# Data base  – Personal Portfolio | Mohamed Hamed | HSBI
+# Module 04 — Data Integrity, Constraints & Edge Triggers
 
-**Name:** Mohamed Elsayed Bahnasy Abdelsayed Hamed
+**Adam Salman · HSBI Databases Portfolio**
 
-**University:** Hochschule Bielefeld (HSBI)
+This module follows the [instructor's Module 4](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/04-integrity-constraints-and-triggers.md) and uses the **same machine/sensor example** as [Mohamed Nassar's Module04](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio/tree/main/Module04). The scripts here are independently runnable; results are measured rather than copied from another student.
 
-**Study Program:** Mechatronics and Automation
+## What is in this folder?
 
-**Course:** Databases
+| File | Purpose |
+| --- | --- |
+| [setup.sql](setup.sql) | STRICT sensor/reading schema, foreign key, constraints, and generated `energy_j` |
+| [triggers.sql](triggers.sql) | `AFTER INSERT` vibration alarm and `AFTER UPDATE` change audit |
+| [readings.csv](readings.csv) | Ten reproducible sample readings |
+| [ingest.py](ingest.py) | Parameterized `executemany()` UPSERT CSV loader |
+| [run_module4.py](run_module4.py) | One-command verification of Tasks A, 1–4 and optional Task 5 |
+| [results.txt](results.txt) | Actual example run output from the stated execution environment |
+| [integrity-notes.md](integrity-notes.md) | Concepts, unexpected cases, pod-study and security comparison |
+| [ref04.md](../Reflections/ref04.md) | Reflection draft with honest completion status |
 
-## About Me
+## Run it in VS Code
 
-My name is Mohamed Hamed, and I am studying Mechatronics and Automation at Hochschule Bielefeld.
+Open the root of **Adam.Salman-Portfolio** in VS Code, then use its terminal:
 
-This is my personal GitHub portfolio, where I document the tasks, exercises, and projects that I complete during the course.
+```powershell
+git pull --ff-only origin main
+uv run python Module04/run_module4.py
+```
 
-My goal is to improve my knowledge of databases, SQL, Python, and GitHub and learn how to use these tools in practical exercises.
+Or, if Python 3.14 is installed and SQLite is at least 3.37:
 
-## Module 1 — Introduction and Local-First Foundations
+```powershell
+python Module04/run_module4.py
+```
 
-In this module, I learned about:
+The runner deletes and **recreates only** `Module04/edge.db`, runs assertions, and saves a fresh `Module04/results.txt`. Do not run it against a production database. The generated database file is intentionally ignored by Git. To ingest the CSV again without rebuilding:
 
-- How the course works and how our portfolio will be assessed.
-- How to create and organize a GitHub portfolio.
-- How to install Python and use uv.
-- The difference between embedded and client/server databases.
-- How to use SQLite and basic SQL commands.
-- How to use AI to help with SQL and check the results.
+```powershell
+uv run python Module04/ingest.py
+```
 
-### Class Activities
+### Evidence by task
 
-We discussed the course requirements and worked together to understand the different tasks.
+**Task A — acceptance test:** A weak SQLite table accepts out-of-range temperatures, free-text values and invalid metric labels. A `STRICT` table with `CHECK` and `NOT NULL` refuses them. The test also proves that `CHECK` alone accepts `NULL`, and `STRICT` can coerce `'20'` into a valid REAL.
 
-### Lab Tasks
+**Task 1 — constraints:** A valid reading is inserted (`41.5`, `interval_s=1`), so the generated column yields **`energy_j=41.5`**. Rejected SQL statements and their exact exception messages appear in [results.txt](results.txt): temperature `9000`, value `'hot'`, non-existent sensor `99`, duplicate `cnc-01/temp_c`, interval `0`, and NULL value. The connection with `PRAGMA foreign_keys=OFF` demonstrates that a foreign key declaration alone is not enough.
 
-I worked on SQL Island, where I practiced SQL commands and learned how to retrieve information from a database.
+**Task 2 — replay-safe ingestion:** A unique index on `(sensor_id, ts)` defines the natural key. `UPSERT` updates the initial reading from `41.5` to `41.7` instead of duplicating it. The Python CSV loader uses bound parameters and runs twice: **11 rows after run 1, 11 after run 2**, with **zero duplicate keys** (1 original row + 10 CSV timestamps).
 
-### What I Learned
+```sql
+CREATE UNIQUE INDEX ux_reading_sensor_ts ON reading(sensor_id, ts);
+INSERT INTO reading(sensor_id, ts, value, interval_s)
+VALUES (1, '2026-03-01 08:00:00', 41.7, 1)
+ON CONFLICT(sensor_id, ts) DO UPDATE
+SET value = excluded.value, interval_s = excluded.interval_s;
+```
 
-I learned the basics of databases and SQL. I also started understanding how to use GitHub and different tools for working with databases.
+**Task 3 — triggers:** A new `vib_rms` value of `2.7` creates a row in `alarm`; changing the reading to `1.4` creates an `audit` row with old/new values. The audit trigger skips no-op updates, so replaying exactly the same value does not generate an extra audit record. The runner benchmarks **10,000 readings**, with/without the alarm trigger, using three runs each and reporting the medians. Benchmarks are **environment-dependent**: use your own `results.txt` to present measurements from your laptop.
 
-### Code and Pictures
+**Task 4 — access control:** `machine_health` gives report readers a limited projection: machine, metric, peak and sample count. A connection opened with `mode=ro` can `SELECT`, but a `DELETE` fails. The runner attempts `chmod 444`, tests a normal connection, and restores file permissions in a `finally` block. On Windows, Unix `chmod` semantics do **not** map exactly to NTFS permissions; an administrator or privileged process may also bypass POSIX file restrictions. **A view is not, by itself, an authorization boundary.**
 
-[Module 1 Work](Module01/README.md)
+**Task 5 — optional extension:** Demonstrates an `INSTEAD OF INSERT` trigger on a simple view, forwarding a view insert to its base table without changing the Module04 sample.
 
-[Module 1 Reflection](Reflections/ref01.md)
+## What remains manual?
 
-## Module 2 — Data Contracts and Legacy Schemas
+**Pod Task B** (sharing observations with another pod) is a real discussion and cannot be completed by a script. Record it in [integrity-notes.md](integrity-notes.md) after it happens. Also run the command above in your local VS Code and keep the generated output; the committed example [results.txt](results.txt) was verified in a separate execution environment, **not** on Adam's computer.
 
-In this module, I learned about:
-
-- Entities and attributes.
-- Primary keys and foreign keys.
-- Natural keys and surrogate keys.
-- One-to-one relationships.
-- One-to-many relationships.
-- Many-to-many relationships.
-- ER diagrams and database structures.
-- Finding problems in database tables using SQL.
-
-We also discussed the tasks with another group, and the professor helped us understand and correct our mistakes.
-
-### What I Learned
-
-My main take-away is that I learned more about databases, SQL, and how tables are connected to each other.
-
-I also understood that before working with a database, I should first understand its structure.
-
-[Module 2 Work](Module02/README.md)
-
-[Module 2 Reflection](Reflections/ref02.md)
-
-## My Group Members
-
-Our Task Pod consists of three members:
-
-1. **Mohamed Hamed (Me)** — [My GitHub Portfolio](https://github.com/mbahnasy426/Mohamed-Hamed)
-2. **Mohamed Nassar** — [GitHub Portfolio](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
-3. **Adam Salman** — [GitHub Portfolio](https://github.com/adamhsalman-droid/Adam.Salman-Portfolio)
-
-We work together, discuss the tasks, and help each other when we face difficulties.
-
-## Course Links
-
-- [Course Syllabus](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/syllabus.md)
-- [Module 1 Instructions](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/01-introduction-and-local-first.md)
-- [Module 2 Instructions](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/02-data-contracts-and-legacy-schemas.md)
-
-## My Main Goal
-
-My main goal is to understand databases better, improve my programming skills, and be able to explain the work that I have done instead of just copying the answers.n-and-local-first.md)
+[Main portfolio](../README.md) · [Reflection 04](../Reflections/ref04.md)
