@@ -1,0 +1,50 @@
+Module 05 — measured evidence (automatically generated)
+Host: Linux-6.18.57-x86_64-with-glibc2.41
+SQLite: 3.46.1
+Database: Module05/normalize.db (retained locally; ignored by Git)
+Build: reused existing database
+
+Round 2 — anomalies
+Update anomaly: one partial edit makes cnc-01 sites disagree: ['Bielefeld', 'Gütersloh']
+Insert anomaly: P-0999 requires a fake/NULL job row in flat5
+Delete anomaly: deleting P-0002's last job row loses its part price
+
+Round 3 — row counts
+flat_jobpart: 200,000
+machine: 50
+part: 10
+job: 20,000
+job_part: 200,000
+report_jobpart: 200,000
+Foreign key check: passed
+Normalized/report aggregate results: identical
+
+Round 4 — alternating warm-cache medians (5 runs each)
+Normalized four-table join: 65.164 ms
+Denormalized report table: 57.603 ms
+Ratio normalized/report: 1.13x (above 1 means report is faster)
+Normalized EXPLAIN QUERY PLAN:
+  SCAN jp
+  SEARCH j USING INTEGER PRIMARY KEY (rowid=?)
+  SEARCH m USING INDEX sqlite_autoindex_machine_1 (machine_id=?)
+  SEARCH p USING INDEX sqlite_autoindex_part_1 (part_no=?)
+  USE TEMP B-TREE FOR GROUP BY
+Report EXPLAIN QUERY PLAN:
+  SCAN report_jobpart USING INDEX ix_report_machine
+  USE TEMP B-TREE FOR GROUP BY
+
+Round 5 — site change cnc-02 (changes rolled back)
+Normalized rows touched: 1 (0.275 ms)
+Report rows touched: 4,000 (4.702 ms)
+3NF base tables storage: 4071424 bytes
+Report base table storage: 11091968 bytes
+Report query without ix_report_machine: 42.775 ms (5-run median)
+Report plan without index:
+  SCAN report_jobpart
+  USE TEMP B-TREE FOR GROUP BY
+
+Note: DB indexes, other objects, and free pages are excluded from table-only dbstat figures.
+Note: timings are specific to this host; rerun on your machine.
+Round 6 memo: Module05/memo.md
+Round 7 curiosity notes: Module05/normalization-notes.md
+No real pod gate/Discord discussion is claimed.
