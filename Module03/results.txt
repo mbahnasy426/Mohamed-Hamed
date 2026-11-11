@@ -1,0 +1,109 @@
+MODULE 03 - INDEPENDENT VALIDATION OF COURSE SQL
+Environment: Python 3.13.5 / SQLite 3.46.1 (execution environment, not student's Windows PC)
+This text records an independent run of equivalent Module 03 SQL and
+security checks against the same deterministic warehouse dataset.
+The repository runner (run_module3.py) creates/overwrites this file when run locally.
+Timing and selected plans may differ across machines and SQLite versions.
+
+SETUP
+customer=2000; product=500; orders=60000; order_line=240000
+PASS: expected row counts.
+
+TASK A - PLAN SAFARI (Module 02 legacy schema)
+Before index:
+  technician = 'Beier': SCAN maint_job
+  machine_name = 'cnc-02': SCAN machine
+  technician LIKE '%ei%': SCAN maint_job
+After CREATE INDEX ix_job_tech ON maint_job(technician):
+  technician = 'Beier': SEARCH maint_job USING INDEX ix_job_tech (technician=?)
+  machine_name = 'cnc-02': SCAN machine
+  technician LIKE '%ei%': SCAN maint_job
+Negative cases:
+  lower(technician) = 'beier': SCAN maint_job
+  technician LIKE 'Bei%': SCAN maint_job (SQLite default LIKE behavior; version-sensitive)
+PASS: exact-match technician filter uses index.
+
+TASK B - ALGEBRA
+sigma[technician='Beier'](maint_job); SELECT * retains all columns.
+
+TASK 1 - CITY REVENUE, 2025
+('Bielefeld', 500, 11242176.0)
+('Gütersloh', 500, 8422344.0)
+('Münster', 500, 5493504.0)
+('Paderborn', 500, 2815656.0)
+Dashboard execution plan:
+  SCAN ol
+  SEARCH o USING INTEGER PRIMARY KEY (rowid=?)
+  SEARCH c USING INTEGER PRIMARY KEY (rowid=?)
+  SEARCH p USING INTEGER PRIMARY KEY (rowid=?)
+  USE TEMP B-TREE FOR GROUP BY
+  USE TEMP B-TREE FOR count(DISTINCT)
+  USE TEMP B-TREE FOR ORDER BY
+PASS: inserting a new city with no orders does not add a result row; inner joins drop it.
+
+TASK 2 - INDEX BENCHMARK
+3 runs per dashboard step, median reported.
+Single-day lookup: 3 batches of 200 executions, median per-execution time.
+Step                         Dashboard median     Single-day median
+No added indexes                 91.641 ms             2.2599 ms
++ ix_orders_ordered_on           95.319 ms             0.0951 ms
++ ix_orderline_order            282.742 ms             0.0885 ms
++ ix_orderline_product          287.702 ms             0.0899 ms
+
+Dashboard individual runs (ms):
+  baseline: [108.10, 91.64, 90.97]
+  + ordered_on: [96.10, 95.32, 94.25]
+  + order_line.order_id: [285.54, 278.04, 282.74]
+  + order_line.product_id: [279.58, 287.70, 290.01]
+
+Baseline dashboard plan: SCAN ol; SEARCH o/c/p by INTEGER PRIMARY KEY;
+  TEMP B-TREE for GROUP BY, count(DISTINCT), ORDER BY.
+After ix_orders_ordered_on alone: same dashboard plan (index not selected).
+After ix_orderline_order: SEARCH o USING INDEX ix_orders_ordered_on
+  (ordered_on>? AND ordered_on<?);
+  SEARCH c BY INTEGER PRIMARY KEY;
+  SEARCH ol USING INDEX ix_orderline_order (order_id=?);
+  SEARCH p BY INTEGER PRIMARY KEY; temporary B-TREEs remain.
+After ix_orderline_product: same dashboard plan; new index unused here.
+
+Single-day lookup before index:
+  SCAN o; SEARCH c USING INTEGER PRIMARY KEY.
+Single-day lookup after date index:
+  SEARCH o USING INDEX ix_orders_ordered_on (ordered_on=?);
+  SEARCH c USING INTEGER PRIMARY KEY.
+Negative: date(o.ordered_on)='2026-02-14' -> SCAN o.
+Positive alternative: WHERE product_id=42 ->
+  SEARCH order_line USING COVERING INDEX ix_orderline_product (product_id=?).
+PASS: selective date filtering uses index; wrapped-date predicate does not.
+Interpretation: the dashboard became slower after planner switched from SCAN
+to repeated indexed JOIN lookups. Indexes do not automatically improve queries.
+
+TASK 3 - SQL INJECTION
+Normal: [(1, 'Customer 1')]
+Payload: ' OR '1'='1
+Vulnerable query: 2000 rows
+Bound parameter: 0 rows
+Vulnerable apostrophe O'Brien -> syntax error near "Brien"
+Bound-parameter apostrophe O'Brien -> [] (no matching customer)
+PASS: bound parameters protect user values from becoming SQL.
+
+TASK 4 - ALGEBRA
+Join C, O, L, P; sigma 2025 date filter;
+gamma city + COUNT(DISTINCT customer_id) + SUM(qty*price).
+ORDER BY is a SQL sort, not a classic relational algebra operator.
+
+TASK 5 - OPTIONAL STRETCH
+GROUP BY version: 400 rows; plan starts with SCAN o USING COVERING INDEX
+  ix_orders_customer_status.
+Correlated subquery: 400 rows; SCAN c plus 2 correlated subqueries,
+  each SEARCH orders USING COVERING INDEX ix_orders_customer_status.
+Window-function version: 400 rows; CO-ROUTINE ranked, SCAN orders USING
+  COVERING INDEX ix_orders_customer_status, temp B-TREE sorting.
+PASS: all three solutions return exactly the same ordered rows.
+
+TASK C - PEER EXCHANGE
+PENDING real-world interaction with another pod. Not claimed as complete.
+
+End of independent validation. Run:
+  uv run python Module03/run_module3.py
+on the student's computer to generate direct runner evidence and local timings.
