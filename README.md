@@ -116,12 +116,3 @@ I will continue developing my skills, improving my documentation, and adding new
 
 I hope that by the end of the semester, this repository will demonstrate my technical development, practical experience, and growing understanding of IoT and microcontroller technologies.
 
----
-
-**Mohamed Hamed**
-
-Mechatronics and Automation
-
-Hochschule Bielefeld (HSBI)
-
-Germany
