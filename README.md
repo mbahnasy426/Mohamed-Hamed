@@ -57,8 +57,16 @@ Collaboration is an important part of my learning experience.
 
 During the course, I work with my fellow students:
 
-- **Mohamed Nassar**
-- **Adam Salman**
+## 🤝 Teamwork and Collaboration
+
+- **Mohamed Nassar** — [GitHub Portfolio](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio)
+- **Adam Salman** — [GitHub Portfolio](https://github.com/adamhsalman-droid/Adam.Salman-Portfolio)
+
+We regularly support each other by discussing technical concepts, sharing ideas, solving problems, and reviewing our work.
+
+Working together helps us strengthen our technical knowledge, improve our problem-solving abilities, and develop effective communication and teamwork skills.
+
+I believe collaboration is an essential part of engineering because exchanging different perspectives allows us to learn more effectively and develop better solutions.
 
 We support each other by discussing technical concepts, exchanging ideas, solving problems, and reviewing our work.
 
