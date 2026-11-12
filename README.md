@@ -1,67 +1,119 @@
-# Module 04 — Data Integrity, Constraints & Edge Triggers
+# IoT/MCU – Personal Portfolio
+### Mohamed Hamed | Hochschule Bielefeld (HSBI)
 
-**Adam Salman · HSBI Databases Portfolio**
+##  About Me
 
-This module follows the [instructor's Module 4](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/04-integrity-constraints-and-triggers.md) and uses the **same machine/sensor example** as [Mohamed Nassar's Module04](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio/tree/main/Module04). The scripts here are independently runnable; results are measured rather than copied from another student.
+Hello! My name is **Mohamed Elsayed Bhnasy Abdelsayed Hamed**, and I am a Mechatronics and Automation student at **Hochschule Bielefeld (HSBI)** in Germany.
 
-## What is in this folder?
+I am interested in engineering, automation, programming, and modern technologies. Through my studies, I aim to develop both my theoretical knowledge and practical skills, particularly in the areas of embedded systems, electronics, and software development.
 
-| File | Purpose |
-| --- | --- |
-| [setup.sql](setup.sql) | STRICT sensor/reading schema, foreign key, constraints, and generated `energy_j` |
-| [triggers.sql](triggers.sql) | `AFTER INSERT` vibration alarm and `AFTER UPDATE` change audit |
-| [readings.csv](readings.csv) | Ten reproducible sample readings |
-| [ingest.py](ingest.py) | Parameterized `executemany()` UPSERT CSV loader |
-| [run_module4.py](run_module4.py) | One-command verification of Tasks A, 1–4 and optional Task 5 |
-| [results.txt](results.txt) | Actual example run output from the stated execution environment |
-| [integrity-notes.md](integrity-notes.md) | Concepts, unexpected cases, pod-study and security comparison |
-| [ref04.md](../Reflections/ref04.md) | Reflection draft with honest completion status |
+I enjoy working on technical challenges, learning new concepts, and collaborating with others to find effective solutions.
 
-## Run it in VS Code
+##  About This Portfolio
 
-Open the root of **Adam.Salman-Portfolio** in VS Code, then use its terminal:
+Welcome to my personal IoT/MCU portfolio!
 
-```powershell
-git pull --ff-only origin main
-uv run python Module04/run_module4.py
-```
+This repository documents my learning journey throughout the IoT/MCU course at Hochschule Bielefeld.
 
-Or, if Python 3.14 is installed and SQLite is at least 3.37:
+The main purpose of this portfolio is to organize my coursework, document practical activities, and reflect on my progress during the semester.
 
-```powershell
-python Module04/run_module4.py
-```
+It includes:
 
-The runner deletes and **recreates only** `Module04/edge.db`, runs assertions, and saves a fresh `Module04/results.txt`. Do not run it against a production database. The generated database file is intentionally ignored by Git. To ingest the CSV again without rebuilding:
+- Class activities and exercises
+- Practical laboratory tasks
+- Programming exercises and projects
+- Screenshots and documentation
+- Personal reflections and learning experiences
+- Challenges, solutions, and improvements
 
-```powershell
-uv run python Module04/ingest.py
-```
+The portfolio is intended to demonstrate not only the work I complete but also how my understanding and technical skills develop over time.
 
-### Evidence by task
+##  My Learning Goals
 
-**Task A — acceptance test:** A weak SQLite table accepts out-of-range temperatures, free-text values and invalid metric labels. A `STRICT` table with `CHECK` and `NOT NULL` refuses them. The test also proves that `CHECK` alone accepts `NULL`, and `STRICT` can coerce `'20'` into a valid REAL.
+During this course, I would like to:
 
-**Task 1 — constraints:** A valid reading is inserted (`41.5`, `interval_s=1`), so the generated column yields **`energy_j=41.5`**. Rejected SQL statements and their exact exception messages appear in [results.txt](results.txt): temperature `9000`, value `'hot'`, non-existent sensor `99`, duplicate `cnc-01/temp_c`, interval `0`, and NULL value. The connection with `PRAGMA foreign_keys=OFF` demonstrates that a foreign key declaration alone is not enough.
+1. Develop a better understanding of microcontrollers and IoT systems.
+2. Improve my programming and problem-solving skills.
+3. Learn how hardware and software communicate.
+4. Gain practical experience with development tools and embedded systems.
+5. Understand how IoT technologies are applied in automation and engineering.
+6. Improve my ability to document technical work clearly.
+7. Develop teamwork, communication, and independent learning skills.
 
-**Task 2 — replay-safe ingestion:** A unique index on `(sensor_id, ts)` defines the natural key. `UPSERT` updates the initial reading from `41.5` to `41.7` instead of duplicating it. The Python CSV loader uses bound parameters and runs twice: **11 rows after run 1, 11 after run 2**, with **zero duplicate keys** (1 original row + 10 CSV timestamps).
+##  Tools and Technologies
 
-```sql
-CREATE UNIQUE INDEX ux_reading_sensor_ts ON reading(sensor_id, ts);
-INSERT INTO reading(sensor_id, ts, value, interval_s)
-VALUES (1, '2026-03-01 08:00:00', 41.7, 1)
-ON CONFLICT(sensor_id, ts) DO UPDATE
-SET value = excluded.value, interval_s = excluded.interval_s;
-```
+Throughout the course, I am using and learning to work with different tools, including:
 
-**Task 3 — triggers:** A new `vib_rms` value of `2.7` creates a row in `alarm`; changing the reading to `1.4` creates an `audit` row with old/new values. The audit trigger skips no-op updates, so replaying exactly the same value does not generate an extra audit record. The runner benchmarks **10,000 readings**, with/without the alarm trigger, using three runs each and reporting the medians. Benchmarks are **environment-dependent**: use your own `results.txt` to present measurements from your laptop.
+- **Visual Studio Code:** Writing, editing, and organizing code.
+- **GitHub:** Managing repositories, documenting progress, and collaborating.
+- **Git:** Tracking changes and maintaining project versions.
+- **Python:** Developing and understanding programming solutions.
+- **uv:** Managing Python environments and dependencies.
+- **Terminal:** Running commands, installing packages, and executing programs.
 
-**Task 4 — access control:** `machine_health` gives report readers a limited projection: machine, metric, peak and sample count. A connection opened with `mode=ro` can `SELECT`, but a `DELETE` fails. The runner attempts `chmod 444`, tests a normal connection, and restores file permissions in a `finally` block. On Windows, Unix `chmod` semantics do **not** map exactly to NTFS permissions; an administrator or privileged process may also bypass POSIX file restrictions. **A view is not, by itself, an authorization boundary.**
+##  Teamwork and Collaboration
 
-**Task 5 — optional extension:** Demonstrates an `INSTEAD OF INSERT` trigger on a simple view, forwarding a view insert to its base table without changing the Module04 sample.
+Collaboration is an important part of my learning experience.
 
-## What remains manual?
+During the course, I work with my fellow students:
 
-**Pod Task B** (sharing observations with another pod) is a real discussion and cannot be completed by a script. Record it in [integrity-notes.md](integrity-notes.md) after it happens. Also run the command above in your local VS Code and keep the generated output; the committed example [results.txt](results.txt) was verified in a separate execution environment, **not** on Adam's computer.
+- **Mohamed Nassar**
+- **Adam Salman**
 
-[Main portfolio](../README.md) · [Reflection 04](../Reflections/ref04.md)
+We support each other by discussing technical concepts, exchanging ideas, solving problems, and reviewing our work.
+
+I believe teamwork helps us understand difficult subjects more effectively and develop important communication and engineering skills.
+
+##  Portfolio Structure
+
+My portfolio is organized into different modules. Each module documents the activities, tasks, and learning experiences associated with that part of the course.
+
+### Module Documentation
+
+Each module may include:
+
+**1. Class Activities**
+
+A summary of the topics discussed and activities completed during the learning sessions.
+
+**2. Practical Tasks**
+
+Documentation of the exercises, programming activities, and technical assignments.
+
+**3. Learning Outcomes**
+
+An explanation of the most important concepts and skills I learned.
+
+**4. Challenges and Solutions**
+
+A description of problems encountered and how I approached solving them.
+
+**5. Personal Reflection**
+
+My thoughts about the learning process, including what went well, what was difficult, and what I would like to improve.
+
+##  Personal Development
+
+My goal is not only to complete the course assignments but also to become a more independent and confident engineering student.
+
+By documenting my work, I can monitor my progress, recognize areas for improvement, and build a collection of knowledge that I can use in future university projects and professional experiences.
+
+I also want to become more comfortable using professional development tools and applying theoretical concepts to practical engineering problems.
+
+##  Final Note
+
+This portfolio represents my personal learning journey.
+
+I will continue developing my skills, improving my documentation, and adding new work as I progress through the course.
+
+I hope that by the end of the semester, this repository will demonstrate my technical development, practical experience, and growing understanding of IoT and microcontroller technologies.
+
+---
+
+**Mohamed Hamed**
+
+Mechatronics and Automation
+
+Hochschule Bielefeld (HSBI)
+
+Germany
