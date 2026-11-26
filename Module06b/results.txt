@@ -1,0 +1,27 @@
+Module 06b — locally reproduced evidence (not the user's own computer)
+Python 3.13.5 | SQLite 3.46.1 | OS Linux-6.18.57-x86_64-with-glibc2.41
+Engine timings depend on OS, storage, caching and Python/shelve backend.
+
+$ python Module06b/json_bench.py
+device rows: 1000
+json_extract vendors (first five): [('cnc-01', 'Siemens'), ('cnc-02', 'Fanuc'), ('molder-07', 'Arburg'), ('device-0004', 'Fanuc'), ('device-0005', 'Arburg')]
+->> firmware (first three): [('cnc-01', '4.2'), ('cnc-02', '3.9'), ('molder-07', '8.1')]
+json_each for cnc-01: [('calibrated', '2026-01-10'), ('firmware', '4.2'), ('vendor', 'Siemens')]
+invalid JSON: REJECTED by CHECK (json_valid(meta))
+new JSON field: cnc-04 spindle_rpm_max=12000; older rows return NULL
+indexed json_extract: count=334; plan=SEARCH device USING INDEX ix_device_vendor (<expr>=?)
+different ->> expression: count=334; plan=SCAN device
+PASS: JSON validation, new field and contrasting query plans
+
+$ python Module06b/local_boundary.py
+second writer while first transaction open: database is locked
+after first writer commits, second writer retries: parts_produced=2
+PASS: SQLite fallback only; shared PostgreSQL experiment still pending
+
+$ python Module06b/kv_compare.py
+sessions: 20000; shelve backend: dbm.sqlite3
+shelve set=3.957s get=0.100s
+SQLite set=0.027s get=0.095s
+SQLite GROUP BY per city: [('city:0', 5000, 25), ('city:1', 5000, 25), ('city:2', 5000, 25), ('city:3', 5000, 25)]; 8.8ms
+shelve full Python scan: {'city:0': 5000, 'city:1': 5000, 'city:2': 5000, 'city:3': 5000}; 119.0ms
+PASS: 20,000 matching keys and four groups; timings are host-specific
