@@ -1,49 +1,116 @@
 # Module 06b — Polyglot Persistence & the Decision
 
-**Adam Salman · HSBI Databases portfolio.** This module follows my [Module 06a](../Module06a/README.md) work and the professor's [official Module 6b studio](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/06b-polyglot-persistence.md). The [Module 7 project brief](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/07-final-project-studio.md) asks us to bring a project ticket from Module 6b.
+**Mohamed Hamed — HSBI Databases Portfolio**
 
-## Five learning goals and evidence
+## Introduction
 
-| Goal | What I can demonstrate |
+In this module, the main idea was to learn about different types of databases and understand when we should use each one. It is also connected to what we studied in Module 06a.
+
+## Learning Goals
+
+- Understand the difference between SQLite and PostgreSQL.
+- Learn how JSON works in SQLite.
+- Understand how key-value storage works.
+- Learn about ACID, BASE and CAP.
+- Understand how to choose the right database for a project.
+
+## Task 1 — Local vs. Server Databases
+
+In this task, the main goal was to understand the difference between a local database and a server-based database.
+
+SQLite is easier to use because we do not need to connect to a server. PostgreSQL allows multiple users to access the same database, but it requires a server and a connection.
+
+One disadvantage of PostgreSQL is that if the server stops working, the users cannot access the database.
+
+The `local_boundary.py` file demonstrates what happens when two connections try to write to the same SQLite database.
+
+## Task 2 — JSON and Key-Value Storage
+
+### JSON in SQLite
+
+In this part, the experiment uses 1,000 device records to understand how JSON can be stored in SQLite.
+
+The main functions are:
+
+- `json_valid()` — checks if the JSON is valid.
+- `json_extract()` — gets specific information from JSON.
+- `json_each()` — goes through the elements inside JSON.
+
+One thing I found interesting is that we can add new information to JSON without changing the whole database structure.
+
+Another important point is that two queries can give the same result but have different execution plans. Using the correct index can make the query more efficient.
+
+### Key-Value Storage
+
+In this part, we compare SQLite and Python Shelve using 20,000 records.
+
+The reference results are:
+
+| Database | Write time | Read time |
+|---|---:|---:|
+| Shelve | 3.957 s | 0.100 s |
+| SQLite | 0.027 s | 0.095 s |
+
+These results are from the reference experiment. I still need to run the experiment on my own laptop.
+
+I would prefer SQLite because we can store the data and also use SQL to filter and group the information.
+
+## Task 3 — Database Decision
+
+For this task, the main goal was to understand which database is better depending on what we want to do.
+
+| Application | Database choice |
 |---|---|
-| JSON in SQLite | `json_bench.py` stores 1,000 device documents, validates JSON, expands it with `json_each`, and proves two contrasting query plans |
-| Key-value access | `kv_compare.py` benchmarks 20,000 keys in both `shelve` and an indexed SQLite table |
-| ACID, BASE and CAP | `engine-notes.md` explains these terms against Module 4 transactions, Module 6a's refreshing copy, and the local/server boundary |
-| Evidence-based engine choice | The decision record below is in `engine-notes.md`; it explicitly distinguishes my existing measurements, fresh test-environment results and instructor references |
-| Server trade-offs | `local_boundary.py` is the permitted SQLite two-writer fallback; real PostgreSQL classroom observations remain pending |
+| Collecting sensor data | SQLite |
+| Monthly reports | SQLite |
+| Device metadata | SQLite with JSON |
+| Dashboard sessions | SQLite key-value storage |
+| Multiple network users | PostgreSQL |
 
-## Reproduce the experiments
+If I had to choose one database for a small local project, I would choose SQLite because it is easier to work with and does not require a server.
 
-From the **repository root**:
+However, if many users need to access and update the database at the same time, I would choose PostgreSQL.
+
+## Important Concepts
+
+- **ACID:** Makes sure that database transactions are reliable.
+- **BASE:** Focuses on availability and allows data to become consistent over time.
+- **CAP:** Explains the limitations between consistency and availability when there is a network problem in a distributed system.
+
+## How to Run the Experiments
 
 ```powershell
 uv sync
 uv run python Module06b/run_module6b.py
 ```
 
-Or run `json_bench.py`, `local_boundary.py` and `kv_compare.py` separately. Each is repeatable and creates only local, Git-ignored database files. The runner writes [results.txt](results.txt) **only when all three scripts finish successfully**. Results currently checked in were produced on a separate Linux/Python 3.13.5 environment, **not my own computer**; I need to rerun on my device before reporting my own timings.
+## Module Files
 
-## Task 1 — Boundary: local versus server
+- [json_bench.py](json_bench.py)
+- [kv_compare.py](kv_compare.py)
+- [local_boundary.py](local_boundary.py)
+- [engine-notes.md](engine-notes.md)
+- [results.txt](results.txt)
+- [run_module6b.py](run_module6b.py)
+- [project-ticket.md](project-ticket.md)
 
-**Completed in the instructor's shared pgweb classroom server:** logged into PostgreSQL `pod15`, queried `machine`, verified a machine row at Bielefeld, and ran increment updates from two browsers. A later read of machine 1 showed `parts_produced=3` (three successful increments over the attempts). The instructor then stopped PostgreSQL: queries failed until the service was restarted; after restart queries worked again.
+## My Takeaway
 
-**My three observations:** Shared access across browsers became easier; remote login/service management became harder; server downtime prevented all remote database queries. The exact PostgreSQL writer lock/wait behavior **was not observed**; quick committed updates are not proof of blocking. The separate `local_boundary.py` SQLite fallback demonstrates locking locally. See [engine notes](engine-notes.md#task-1--shared-postgresql-server-classroom-observation).
+The most important thing in this module is understanding that not every database is suitable for every project. Before choosing a database, we need to understand the requirements of the project and what we want to achieve.
 
-## Task 2 — Shape
+I also found it interesting that SQLite can work with different types of data, including relational data, JSON and key-value data.
 
-**JSON:** The official 1,000-device sample is stored in a `STRICT` SQLite table with `CHECK(json_valid(meta))`. Broken JSON fails; adding `spindle_rpm_max` to one record needs no schema migration. The two identical vendor filters return **334 rows** each; the indexed `json_extract(meta, '$.vendor')` query uses **`SEARCH device USING INDEX ix_device_vendor`**, whereas `meta ->> 'vendor'` shows **`SCAN device`**. This is because the expression must match the expression index, not merely return the same answer.
+This module also helps me prepare for my final project in Module 7.
 
-**Key-value:** The test-environment run of 20,000 sessions recorded `shelve` set/get **3.957/0.100 s** and SQLite set/get **0.027/0.095 s**. The SQLite set path uses **one batch transaction**; `shelve` performed per-key writes and used the `dbm.sqlite3` backend. These are not controlled intrinsic engine comparisons. SQLite can answer aggregate questions with `GROUP BY` (four filters of 5,000 sessions / 25 users); `shelve` must scan keys in Python. For this workload I would choose a SQLite key-value table.
+## References
 
-## Task 3 — Decision and defence
+- [Official Module 06b](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/06b-polyglot-persistence.md)
+- [Module 06a](../Module06a/README.md)
+- Adam Salman — Task Pod reference.
+- Mohamed Nassar — Task Pod reference.
 
-The one-page [engine decision record](engine-notes.md#one-page-engine-decision-record) provides one row each for ingest, month-end report, changing vendor metadata, dashboard sessions and optional network users. It answers the **one-engine** question and lists the **defence questions**. A real exchange with another Task Pod and any resulting revision must be recorded after it occurs, not invented.
+## Remaining Work
 
-## Homework and navigation
-
-- [Runnable local evidence](results.txt) and [engine notes / decision record](engine-notes.md).
-- [Project ticket for Module 7](project-ticket.md): person, decision, first query, data source.
-- [Reflection 06b](../Reflections/ref06b.md), explicitly listing remaining classroom work.
-- [Nassar's Module 06b](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio/tree/main/Module06b) was used for pod structure and comparison. [Hamed's portfolio](https://github.com/mbahnasy426/Mohamed-Hamed) has no Module 06b directory at the time of this preparation. All claimed execution output here belongs to this test environment, not a teammate.
-
-**Status:** JSON experiment, local concurrency fallback, key-value homework, decision draft, project ticket, reflection: prepared and locally tested where applicable. Shared PostgreSQL connection, writes and outage/recovery **observed**; PostgreSQL transaction lock/wait, own-device timings, Module 06a own-device historical-report benchmark, and real pod defence: **still to do**.
+- Run the experiments on my own laptop.
+- Verify PostgreSQL concurrency behaviour.
+- Complete the database decision discussion with the Task Pod.
