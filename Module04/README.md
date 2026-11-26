@@ -1,6 +1,6 @@
 # Module 04 — Data Integrity, Constraints & Edge Triggers
 
-**Adam Salman · HSBI Databases Portfolio**
+**MOhamedhamed · HSBI Databases Portfolio**
 
 This module follows the [instructor's Module 4](https://github.com/iotempire/iotempire-teaching/blob/main/full-classes/hsbi-databases-10d/modules/04-integrity-constraints-and-triggers.md) and uses the **same machine/sensor example** as [Mohamed Nassar's Module04](https://github.com/nassarrrrr/M.Nassar-HSBI-Database-Portofolio/tree/main/Module04). The scripts here are independently runnable; results are measured rather than copied from another student.
 
